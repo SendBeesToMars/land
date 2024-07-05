@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Poggers</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="icon" href="favicon.png">
+</head>
+<body>
+  <h1>Hello, world! ;)</h1>
+
+  <label for="">Stuff:</label>
+  <ul>
+    <li>Tinder: <span class="inv" id="tinder_num"></span></li>
+    <li>Berries: <span class="inv" id="berries_num"></span> </li>
+    <li>Water: <span class="inv" id="water_num"></span></li>
+  </ul>
+  <ul>
+    <li>You have a backpack with some rations, tools and a tent.</li>
+    <li>You are out to settle down on a plot of land.</li>
+    <li>You settle next to a river.</li>
+    <li>There is a pond 20 mins walk away.</li>
+    <li>The fish in the pond are more keen to be caught. The river fish are too strong for the lure/line. (you need better tools)</li>
+    <li>There is only a certain amount of fish in the pond. Do you keep fishing?</li>
+    <li>When there are more people living in the area and they are also fishing. Do you keep on fishing more fish? (Tragedy of the commons)</li>
+  </ul>
+
+  <label for="">Gather:</label>
+  <button type="button" id="tinder" class="gather" onclick="gather(this.id)">Tinder</button>
+  <button type="button" id="berries" class="gather" onclick="gather(this.id)">Berries</button>
+  <button type="button" id="water" class="gather" onclick="gather(this.id)">Water</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
