@@ -1,0 +1,18 @@
+
+body {
+    background-color: #270300;
+    color: bisque;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+button {
+    border: .2rem solid rgb(11, 56, 0);
+    border-radius: .5rem;
+    padding: .5rem 1rem;
+    background-color: rgb(255, 235, 235);
+    color: rgb(11, 56, 0);
+}
+button:focus {
+    border: .2rem solid rgb(255, 123, 0);
+    color: rgb(119, 54, 0);
+}
