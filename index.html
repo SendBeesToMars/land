@@ -13,6 +13,9 @@
 
   <label for="">Stuff:</label>
   <ul>
+    <li>Days Elapsed: <span id="days_elapsed"></span></li>
+  </ul>
+  <ul>
     <li>Tinder: <span class="inv" id="tinder_num"></span></li>
     <li>Berries: <span class="inv" id="berries_num"></span> </li>
     <li>Water: <span class="inv" id="water_num"></span></li>
@@ -22,21 +25,44 @@
     <li>You are out to settle down on a plot of land.</li>
     <li>You settle next to a river.</li>
     <li>There is a pond 20 mins walk away.</li>
-    <li>The fish in the pond are more keen to be caught. The river fish are too strong for the lure/line. (you need better tools)</li>
+    <li>The fish in the pond are keen to be caught. The river fish aren't interested in your current lure. (you need better tools)</li>
     <li>There is only a certain amount of fish in the pond. Do you keep fishing?</li>
     <li>When there are more people living in the area and they are also fishing. Do you keep on fishing more fish? (Tragedy of the commons)</li>
   </ul>
 
-  <label for="">Gather:</label>
+  <label>Hunger:</label>
+  <progress id="progress_hunger" max="100" value="0"></progress>
+  <br>
+  <label>Thirst:</label>
+  <progress id="progress_thirst" max="100" value="0"></progress>
+  <br>
+  <label>The will to live:</label>
+  <progress id="progress_will" max="100" value="100"></progress>
+  <br>
+  <br>
+  <label>Gather:</label>
   <button type="button" id="tinder" class="gather" onclick="gather(this.id)">Tinder</button>
   <button type="button" id="berries" class="gather" onclick="gather(this.id)">Berries</button>
   <button type="button" id="water" class="gather" onclick="gather(this.id)">Water</button>
+  <progress id="progress_gather" max="100" value="0"></progress>
   <br>
   <br>
-  <label for="">Dilly-dally:</label>
+  <label>Dilly-dally:</label>
   <button type="button" id="eat" class="gather" onclick="consoom(this.id, 'berries')">Eat</button>
   <button type="button" id="sleep" class="gather" onclick="consoom(this.id, 'tinder')">Sleep</button>
   <button type="button" id="rave" class="gather" onclick="consoom(this.id, 'water')">Rave</button>
+  <progress id="progress_dally" max="100" value="0"></progress>
+  <br>
+  <br>
+  <label>Day Progress:</label>
+  <progress id="progress_day" max="100" value="0"></progress>
+
+  <p id="afs"> xd </p>
+  <label>Wandering Trader:</label>
+  <progress id="progress_dally" max="100" value="0"></progress>
+  <br>
+  <br>
+  <div id="upgrades"></div>
 
   <script src="script.js"></script>
 </body>
