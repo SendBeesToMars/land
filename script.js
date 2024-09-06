@@ -23,6 +23,7 @@ let resources = {
 }
 
 function gather(id, increment = 2) {
+    let progressbar_increment = 1;
     stuff.off_flag = !stuff.off_flag;
     clear_timers();
     if (id != localStorage.getItem("current_id")) {
@@ -34,10 +35,11 @@ function gather(id, increment = 2) {
     stuff.current_selection = id;
     localStorage.setItem("current_id", id);
     clear_EVERYTHING(id);
-    stuff.interval_timers.push(setInterval(progressbar_gather, 10, id));
+    stuff.interval_timers.push(setInterval(set_progressbar, 10, "progress_gather", progressbar_increment, id, increment));
 }
 
 function consoom(id, resource_id, decrement = -10) {
+    let progressbar_increment = 1;
     stuff.off_flag = !stuff.off_flag;
     clear_timers();
     if (id != localStorage.getItem("current_id")) {
@@ -49,8 +51,7 @@ function consoom(id, resource_id, decrement = -10) {
     stuff.current_selection = id;
     localStorage.setItem("current_id", id);
     clear_EVERYTHING(id);
-    stuff.interval_timers.push(setInterval(progressbar_dally, 30, resource_id));
-    // stuff.interval_timers.push(setInterval(item_increment, 500, resource_id, decrement));
+    stuff.interval_timers.push(setInterval(set_progressbar, 30, "progress_dally", progressbar_increment, resource_id, decrement));
 }
 
 function clear_EVERYTHING(id) {
@@ -96,36 +97,23 @@ function progressbar_day() {
     }
 }
 
-function progressbar_gather(id) {
-    let progress_gather = document.getElementById("progress_gather");
-    progress_gather.value += 1;
-    if (progress_gather.value >= 100) {
-        progress_gather.value = 0;
-        item_increment(id, 1);
-    }
-}
+function set_progressbar(progressbar_name, progressbar_increment, resource_id, resource_increment) {
+    let progressbar_element = document.getElementById(progressbar_name);
+    
+    progressbar_element.value += parseInt(progressbar_increment);
+    localStorage.setItem(progressbar_name, progressbar_element.value);
 
-function progressbar_dally(id) {
-    let progress_dally = document.getElementById("progress_dally");
-    progress_dally.value += 1;
-    if (progress_dally.value >= 100) {
-        progress_dally.value = 0;
-        item_increment(id, -10);
-    }
-}
-
-function progressbar(name, increment) {
-    let progressbar_element = document.getElementById(name);
-    progressbar_element.value += increment;
-    localStorage.setItem(name, progressbar_element.value);
-
-    if (increment > 0) {
+    if (progressbar_increment > 0) {
         if (progressbar_element.value == 100) {
             progressbar_element.value = 0;
+            if (!resource_id && !resource_increment) return;
+            item_increment(resource_id, resource_increment);
         }
     } else {
         if (progressbar_element.value == 0) {
             progressbar_element.value = 100;
+            if (!resource_id && !resource_increment) return;
+            item_increment(resource_id, resource_increment);
         }
     }
 }
@@ -196,8 +184,8 @@ function buy(item) {
     document.getElementById("days_elapsed").innerHTML = localStorage.getItem("days_elapsed");
     document.getElementById("progress_day").value = localStorage.getItem("seconds_elapsed");
     setInterval(progressbar_day, 1000);
-    setInterval(progressbar, 1000, "progress_hunger", 1);
-    setInterval(progressbar, 1000, "progress_thirst", 1);
-    setInterval(progressbar, 1000, "progress_will", -1);
+    setInterval(set_progressbar, 1000, "progress_hunger", 1);
+    setInterval(set_progressbar, 1000, "progress_thirst", 1);
+    setInterval(set_progressbar, 1000, "progress_will", -1);
     draw_upgrade_ui();
 }
