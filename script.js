@@ -155,14 +155,16 @@ function draw_upgrade_ui(upgrade) {
     }
 }
 
-function buy(item) {
+function buy(item_name) {
     // need to save item prices from the buy menu to local storage
-    resources[list_of_stuff_you_can_get[item].resource].quantity -= Math.floor(list_of_stuff_you_can_get[item].price);
-    resources[list_of_stuff_you_can_get[item].resource].multiplier *= list_of_stuff_you_can_get[item].multiplier.multiplier_increase;
-    localStorage.setItem(list_of_stuff_you_can_get[item].resource, resources[list_of_stuff_you_can_get[item].resource].quantity)
-    localStorage.setItem(list_of_stuff_you_can_get[item].resource + "_multi", resources[list_of_stuff_you_can_get[item].resource].multiplier);
-    update_ui(list_of_stuff_you_can_get[item].resource);
-    list_of_stuff_you_can_get[item].price *= 1.2;
+    let item = list_of_stuff_you_can_get[item_name];
+    let resource = resources[item.resource];
+    resource.quantity -= Math.floor(item.price);
+    resource.multiplier *= item.multiplier.multiplier_increase;
+    localStorage.setItem(item.resource, resource.quantity);
+    localStorage.setItem(item.resource + "_multi", resource.multiplier);
+    update_ui(item.resource);
+    item.price *= 1.1;
     draw_upgrade_ui();
     // need to apply the multiplier to gathering. decrease 
 }
