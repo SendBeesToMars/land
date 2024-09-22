@@ -7,6 +7,7 @@ let stuff = {
     off_flag: true,
 }
 
+
 let resources = {
     tinder: {
         quantity: 0,
@@ -21,6 +22,32 @@ let resources = {
         multiplier: 1
     },
 }
+
+
+let actions = {
+    eat: {
+        need: "hunger",
+        resources: "food",
+        bar: "progress_hunger",
+    },
+    sleep: {
+        need: "drowsiness",
+        resources: "tinder",
+        bar: "progress_drowsiness"
+    },
+    rave: {
+        need: "thirst",
+        resources: "water",
+        bar: "progress_thirst"
+    }
+}
+
+let needs = {
+    hunger : 0,
+    thirst : 0,
+    drowsiness : 0
+}
+
 
 function gather(id, increment = 2) {
     let progressbar_increment = 1;
@@ -38,7 +65,8 @@ function gather(id, increment = 2) {
     stuff.interval_timers.push(setInterval(set_progressbar, 10, "progress_gather", progressbar_increment, id, increment));
 }
 
-function consoom(id, resource_id, decrement = -10) {
+
+function consoom(id, resource_id, progressbar_need, decrement = -10) {
     let progressbar_increment = 1;
     stuff.off_flag = !stuff.off_flag;
     clear_timers();
@@ -54,6 +82,7 @@ function consoom(id, resource_id, decrement = -10) {
     stuff.interval_timers.push(setInterval(set_progressbar, 30, "progress_dally", progressbar_increment, resource_id, decrement));
 }
 
+
 function clear_EVERYTHING(id) {
     clear_timers();
     if (stuff.current_selection === id) {
@@ -68,15 +97,24 @@ function clear_EVERYTHING(id) {
     document.getElementById(id).style.borderStyle = 'inset';
 }
 
+
 function update_ui(id) {
     document.getElementById(id + "_num").textContent = localStorage.getItem(id);
 }
 
-function item_increment(name, change) {
+
+function set_item(name, change) {
+    localStorage.setItem(name, change);
+}
+
+
+function increment_item(name, change, update_ui_flag = false) {
     const item = localStorage.getItem(name);
     !item ? localStorage.setItem(name, change) :
         localStorage.setItem(name, parseInt(item) + change);
-    update_ui(name);
+    if (update_ui_flag) {
+        update_ui(name);
+    }
 }
 
 
@@ -86,16 +124,18 @@ function clear_timers() {
     }
 }
 
+
 function progressbar_day() {
     let progress_day = document.getElementById("progress_day");
     progress_day.value += 1;
     localStorage.setItem("seconds_elapsed", progress_day.value);
     if (progress_day.value == 100) {
         progress_day.value = 0;
-        item_increment("days_elapsed", 1);
+        increment_item("days_elapsed", 1 ,true);
         document.getElementById("days_elapsed").innerHTML = localStorage.getItem("days_elapsed");
     }
 }
+
 
 function set_progressbar(progressbar_name, progressbar_increment, resource_id, resource_increment) {
     let progressbar_element = document.getElementById(progressbar_name);
@@ -107,16 +147,17 @@ function set_progressbar(progressbar_name, progressbar_increment, resource_id, r
         if (progressbar_element.value == 100) {
             progressbar_element.value = 0;
             if (!resource_id && !resource_increment) return;
-            item_increment(resource_id, resource_increment);
+            increment_item(resource_id, resource_increment, true);
         }
     } else {
         if (progressbar_element.value == 0) {
             progressbar_element.value = 100;
             if (!resource_id && !resource_increment) return;
-            item_increment(resource_id, resource_increment);
+            increment_item(resource_id, resource_increment, true);
         }
     }
 }
+
 
 var list_of_stuff_you_can_get = {
     axe: {
@@ -145,6 +186,7 @@ var list_of_stuff_you_can_get = {
     }
 };
 
+
 function draw_upgrade_ui(upgrade) {
     // clear ui
     document.getElementById("upgrades").innerHTML = "";
@@ -154,6 +196,7 @@ function draw_upgrade_ui(upgrade) {
         document.getElementById("upgrades").innerHTML += `<button type='button' id='${key}' class='gather' onclick='buy("${key}")'>${key} - ${Math.floor(value.price)} ${value.resource}</button>`;
     }
 }
+
 
 function buy(item_name) {
     // need to save item prices from the buy menu to local storage
@@ -168,6 +211,15 @@ function buy(item_name) {
     draw_upgrade_ui();
     // need to apply the multiplier to gathering. decrease 
 }
+
+
+function update_progressbars() {
+    Object.keys(actions).forEach(key => {
+        console.log(key);
+        
+    })
+}
+
 
 {
     let inventory = document.getElementsByClassName("inv");
@@ -186,8 +238,14 @@ function buy(item_name) {
     document.getElementById("days_elapsed").innerHTML = localStorage.getItem("days_elapsed");
     document.getElementById("progress_day").value = localStorage.getItem("seconds_elapsed");
     setInterval(progressbar_day, 1000);
-    setInterval(set_progressbar, 1000, "progress_hunger", 1);
-    setInterval(set_progressbar, 1000, "progress_thirst", 1);
-    setInterval(set_progressbar, 1000, "progress_will", -1);
-    draw_upgrade_ui();
+    setInterval(increment_item, 1000, "progress_hunger", 1);
+    setInterval(increment_item, 1000, "progress_thirst", 1);
+    setInterval(increment_item, 1000, "progress_drowsiness", 1);
+    setInterval(update_progressbars, 1000);
+    // setInterval(set_progressbar, 1000, "progress_hunger", 1);
+    // setInterval(set_progressbar, 1000, "progress_thirst", 1);
+    // setInterval(set_progressbar, 1000, "progress_drowsiness", 1);
+    // setInterval(set_progressbar, 1000, "progress_dread", 1);
+    // setInterval(set_progressbar, 1000, "progress_mania", 1);
+    // draw_upgrade_ui();
 }

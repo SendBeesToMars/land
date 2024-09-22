@@ -36,8 +36,14 @@
   <label>Thirst:</label>
   <progress id="progress_thirst" max="100" value="0"></progress>
   <br>
-  <label>The will to live:</label>
-  <progress id="progress_will" max="100" value="100"></progress>
+  <label>Drowsiness:</label>
+  <progress id="progress_drowsiness" max="100" value="0"></progress>
+  <!-- <br>
+  <label>Dread:</label>
+  <progress id="progress_dread" max="100" value="0"></progress>
+  <br>
+  <label>Mania:</label>
+  <progress id="progress_mania" max="100" value="0"></progress> -->
   <br>
   <br>
   <label>Gather:</label>
@@ -48,21 +54,21 @@
   <br>
   <br>
   <label>Dilly-dally:</label>
-  <button type="button" id="eat" class="gather" onclick="consoom(this.id, 'berries')">Eat</button>
-  <button type="button" id="sleep" class="gather" onclick="consoom(this.id, 'tinder')">Sleep</button>
-  <button type="button" id="rave" class="gather" onclick="consoom(this.id, 'water')">Rave</button>
+  <button type="button" id="eat" class="gather" onclick="consoom(this.id, 'berries', 'progress_hunger')">Eat</button>
+  <button type="button" id="sleep" class="gather" onclick="consoom(this.id, 'tinder', 'progress_drowsiness')">Sleep</button>
+  <button type="button" id="rave" class="gather" onclick="consoom(this.id, 'water', 'progress_thirst')">Rave</button>
   <progress id="progress_dally" max="100" value="0"></progress>
   <br>
   <br>
   <label>Day Progress:</label>
   <progress id="progress_day" max="100" value="0"></progress>
 
-  <p id="afs"> xd </p>
+  <!-- <p id="afs"> xd </p>
   <label>Wandering Trader:</label>
   <progress id="progress_dally" max="100" value="0"></progress>
   <br>
   <br>
-  <div id="upgrades"></div>
+  <div id="upgrades"></div> -->
 
   <script src="script.js"></script>
 </body>
