@@ -43,9 +43,27 @@ let actions = {
 }
 
 let needs = {
-    hunger : 0,
-    thirst : 0,
-    drowsiness : 0
+    hunger: 0,
+    thirst: 0,
+    drowsiness: 0
+}
+
+
+function update_progressbars() {
+    Object.keys(actions).forEach(key => {
+        let need = actions[key].need;
+        let bar = actions[key].bar;
+
+        needs[need] += 1;
+
+        update_progressbar(bar, needs[need]);
+    })
+}
+
+
+function update_progressbar(bar, need_quantity) {
+    let progressbar_element = document.getElementById(bar);
+    progressbar_element.value = parseInt(need_quantity);
 }
 
 
@@ -66,7 +84,13 @@ function gather(id, increment = 2) {
 }
 
 
-function consoom(id, resource_id, progressbar_need, decrement = -10) {
+function consoom(id, resource_id, decrement = -10) {    
+    let bar = actions[id].bar;
+    let need = actions[id].need;
+    needs[need] += -1;
+    update_progressbar(bar, needs[need]);
+    return
+
     let progressbar_increment = 1;
     stuff.off_flag = !stuff.off_flag;
     clear_timers();
@@ -131,7 +155,7 @@ function progressbar_day() {
     localStorage.setItem("seconds_elapsed", progress_day.value);
     if (progress_day.value == 100) {
         progress_day.value = 0;
-        increment_item("days_elapsed", 1 ,true);
+        increment_item("days_elapsed", 1, true);
         document.getElementById("days_elapsed").innerHTML = localStorage.getItem("days_elapsed");
     }
 }
@@ -139,7 +163,7 @@ function progressbar_day() {
 
 function set_progressbar(progressbar_name, progressbar_increment, resource_id, resource_increment) {
     let progressbar_element = document.getElementById(progressbar_name);
-    
+
     progressbar_element.value += parseInt(progressbar_increment);
     localStorage.setItem(progressbar_name, progressbar_element.value);
 
@@ -191,7 +215,7 @@ function draw_upgrade_ui(upgrade) {
     // clear ui
     document.getElementById("upgrades").innerHTML = "";
     console.log(list_of_stuff_you_can_get);
-    
+
     for (const [key, value] of Object.entries(list_of_stuff_you_can_get)) {
         document.getElementById("upgrades").innerHTML += `<button type='button' id='${key}' class='gather' onclick='buy("${key}")'>${key} - ${Math.floor(value.price)} ${value.resource}</button>`;
     }
@@ -213,28 +237,20 @@ function buy(item_name) {
 }
 
 
-function update_progressbars() {
-    Object.keys(actions).forEach(key => {
-        console.log(key);
-        
-    })
-}
-
-
 {
     let inventory = document.getElementsByClassName("inv");
     for (var i = 0; i < inventory.length; i++) {
         inventory[i].innerHTML = localStorage.getItem(
             inventory[i].id.substring(0, inventory[i].id.length - "_num".length));
     }
-    
+
     // get item count from local storage
     for (const [key] of Object.entries(resources)) {
         resources[key].quantity = localStorage.getItem(key);
         let resource_multi = localStorage.getItem(key + "_multi");
         resource_multi > 0 ? resources[key].multiplier = resource_multi : resources[key].multiplier = 1;
     }
-    
+
     document.getElementById("days_elapsed").innerHTML = localStorage.getItem("days_elapsed");
     document.getElementById("progress_day").value = localStorage.getItem("seconds_elapsed");
     setInterval(progressbar_day, 1000);
